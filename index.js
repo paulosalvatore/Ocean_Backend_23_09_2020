@@ -90,7 +90,12 @@ app.put('/mensagens/:id', async (req, res) => {
 });
 
 // Delete
-app.delete('/mensagens/:id', (req, res) => {
+app.delete('/mensagens/:id', async (req, res) => {
+    const id = req.params.id;
+
+    const resultado = await mensagens.deleteOne({ _id: ObjectId(id) });
+
+    res.send(`Mensagem com o ID ${id} foi removida com sucesso.`);
 });
 
 app.listen(port, () => {
