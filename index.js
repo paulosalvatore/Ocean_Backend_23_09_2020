@@ -59,7 +59,14 @@ app.post('/mensagens', async (req, res) => {
 });
 
 // Read Single
-app.get('/mensagens/:id', (req, res) => {
+app.get('/mensagens/:id', async (req, res) => {
+    // Pega o ID através dos parâmetros da requisição
+    const id = req.params.id;
+
+    // Acessamos a mensagem de acordo com o ID informado
+    const mensagem = await mensagens.findOne({ _id: mongodb.ObjectId(id) });
+
+    res.json(mensagem);
 });
 
 // Update
