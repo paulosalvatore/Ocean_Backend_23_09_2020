@@ -71,7 +71,22 @@ app.get('/mensagens/:id', async (req, res) => {
 });
 
 // Update
-app.put('/mensagens/:id', (req, res) => {
+app.put('/mensagens/:id', async (req, res) => {
+    // Acessa o ID pelos parâmetros
+    const id = req.params.id;
+
+    // Obtém a mensagem que foi enviada pelo usuário no corpo (body) da requisição
+    const novaMensagem = req.body;
+
+    const mensagemAtual = await mensagens.findOne({ _id: ObjectId(id) });
+
+    mensagemAtual.texto = novaMensagem.texto;
+
+    // Atualiza a mensagem direto na lista de mensagens, acessando pelo ID que foi informado
+    const resultado = await mensagens.updateOne({ _id: ObjectId(id) }, { $set: mensagemAtual });
+
+    // Envia uma mensagem de sucesso.
+    res.json(mensagemAtual);
 });
 
 // Delete
