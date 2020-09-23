@@ -45,7 +45,17 @@ app.get('/mensagens', async (req, res) => {
 });
 
 // Create
-app.post('/mensagens', (req, res) => {
+app.post('/mensagens', async (req, res) => {
+    // Obtendo a mensagem que foi recebida através do body da requisição
+    const mensagem = req.body;
+
+    // Insiro a mensagem na collection de mensagens do MongoDB
+    const resultado = await mensagens.insertOne(mensagem);
+
+    const objetoInserido = resultado.ops[0];
+
+    // Envio a mensagem de sucesso, informando o ID obtido
+    res.json(objetoInserido);
 });
 
 // Read Single
